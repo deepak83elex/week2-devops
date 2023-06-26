@@ -18,7 +18,20 @@ def home():
 
 @app.route("/get_quote")
 def quote():
-    quote = requests.get("http://quote-gen-container:5000/quote").text
+    # quote = requests.get("http://week2-devops-web1-1:5000/quote").text
+    hosts = [
+        "http://week2-devops-web1-1:5000/quote",
+        "http://week2-devops-web1-2:5000/quote"
+    ]
+
+    quote = "Quote service is unvailable"
+
+    for host in hosts:
+        r = requests.get(host)
+        if r.status_code == 200:
+            quote = r.text
+            break
+    
     print("quote - ", quote)
 
     return render_template("quote.html", quote=quote)
